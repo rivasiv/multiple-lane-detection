@@ -82,16 +82,19 @@ int main(int argc, char** argv)
   while (nh.ok()) 				// Until the ROS node is being active 
   {
     cv_ptr->image = cv::imread(argv[1]+temp+filenames[count], CV_LOAD_IMAGE_COLOR);	// Read an image and copy it to OpenCV image container
-    cv_ptr->encoding = "bgr8";			// Specify encoding as BGR8
-    pub.publish(cv_ptr->toImageMsg());		// Convert OpenCV image to ROS image format and publish it
-    ros::spinOnce();				// The ROS core calls all the callbacks waiting at this instance
-    loop_rate.sleep();				// No more callbacks occur after this
-    std::cout<<count<<"\n";			// Print the frame number published
-    count++;					// Increase the frame number
-    if(count==filenames.size())			// If all files are published, reset the counter and repeat publishing from the start
-    {		
-    count=0;					
-    }
+    if ((cv_ptr->image.rows > 0) && (cv_ptr->image.cols > 0))
+    {
+    	cv_ptr->encoding = "bgr8";			// Specify encoding as BGR8
+    	pub.publish(cv_ptr->toImageMsg());		// Convert OpenCV image to ROS image format and publish it
+    	ros::spinOnce();				// The ROS core calls all the callbacks waiting at this instance
+    	loop_rate.sleep();				// No more callbacks occur after this
+    	std::cout<<count<<"\n";			// Print the frame number published
+     }
+     count++;					// Increase the frame number
+     if(count==filenames.size())		// If all files are published, reset the counter and repeat publishing from the start
+     {		
+   	count=0;					
+     }	
   }
 }
 /* ------------------------------------------------------------------------------------------------------------ */
