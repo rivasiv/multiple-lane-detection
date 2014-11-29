@@ -87,6 +87,7 @@ int main(int argc, char** argv)
         filenames[i][j+k]=argv[3][k];
     	k++;
     }
+    filenames[i][j+k]=0;
     imwrite(argv[1]+temp+filenames[i],cv_ptr->image); 	// Save the image back to the folder with a filename that has required extension
     printf("\n%d",i);					// Print the image number which just got converted 
   }
